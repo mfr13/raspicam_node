@@ -255,6 +255,27 @@ static void get_status(RASPIVID_STATE *state) {
         state->camera_parameters.shutter_speed = 0;
         ros::param::set("~shutter_speed", 0);
     }
+	
+    if (ros::param::get("~color_effects_u", temp)) {
+        state->camera_parameters.colourEffects.u = temp;
+    } else {
+        state->camera_parameters.colourEffects.u = 128;
+        ros::param::set("~color_effects_u", 128);
+    }
+
+    if (ros::param::get("~color_effects_v", temp)) {
+        state->camera_parameters.colourEffects.v = temp;
+    } else {
+        state->camera_parameters.colourEffects.v = 128;
+        ros::param::set("~color_effects_v", 128);
+    }
+	
+    if (ros::param::get("~color_effects_enable", temp_bool)) {
+        state->camera_parameters.colourEffects.enable = temp_bool;
+    } else {
+        state->camera_parameters.colourEffects.enable = 0;
+        ros::param::set("~color_effects_enable", 0);
+    }
 }
 
 /**

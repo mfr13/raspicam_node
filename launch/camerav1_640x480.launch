@@ -10,6 +10,8 @@
     <param name="vFlip" value="false"/>
 	<param name="exposure_mode" value="antishake"/>
     <param name="shutter_speed" value="0"/>
+	
+	<param name="color_effects_enable" value="true"/>
 
     <param name="camera_frame_id" value="raspicam"/>
 
