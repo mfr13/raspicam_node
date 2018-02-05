@@ -84,7 +84,7 @@ int main(int argc, char **argv) {
 #include "camera_info_manager/camera_info_manager.h"
 #include "ros/ros.h"
 #include "sensor_msgs/CameraInfo.h"
-#include "sensor_msgs/CompressedImage.h"
+#include "sensor_msgs/Image.h"
 #include "sensor_msgs/SetCameraInfo.h"
 #include "std_srvs/Empty.h"
 
@@ -332,7 +332,7 @@ static void encoder_buffer_callback(MMAL_PORT_T *port,
                     frames_skipped++;
                 } else {
                     frames_skipped = 0;
-                    sensor_msgs::CompressedImage msg;
+                    sensor_msgs::Image msg;
                     msg.header.seq = pData->frame;
                     msg.header.frame_id = camera_frame_id;
                     msg.header.stamp = ros::Time::now();
@@ -927,7 +927,7 @@ int main(int argc, char **argv) {
     }
 
     image_pub =
-        n.advertise<sensor_msgs::CompressedImage>("image/compressed", 1);
+        n.advertise<sensor_msgs::Image>("image", 1);
     camera_info_pub = n.advertise<sensor_msgs::CameraInfo>("camera_info", 1);
 
     dynamic_reconfigure::Server<raspicam_node::CameraConfig> server;
