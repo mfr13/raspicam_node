@@ -10,6 +10,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   camera_info_manager
   dynamic_reconfigure
+  cv_bridge
 )
 
 ## System dependencies are found with CMake's conventions
@@ -109,6 +110,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(include
   ${catkin_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS}
   /home/pi/userland
   /opt/vc/include
   /opt/vc/include/interface/vcos/pthreads
@@ -142,6 +144,7 @@ target_link_libraries(raspicam_node
 
 target_link_libraries(raspicam_raw_node
   ${catkin_LIBRARIES}
+  ${OpenCV_LIBRARIES}
   raspicamcontrol raspicli
   ${RPI_LIBRARIES} 
 )

@@ -88,6 +88,9 @@ int main(int argc, char **argv) {
 #include "sensor_msgs/SetCameraInfo.h"
 #include "std_srvs/Empty.h"
 
+#include <cv_bridge/cv_bridge.h>
+#include <opencv2/imgproc/imgproc.hpp>
+
 #include "RaspiCLI.h"
 #include "RaspiCamControl.h"
 
@@ -344,7 +347,19 @@ static void camera_buffer_callback(MMAL_PORT_T *port,
 					msg.data.insert(
                         msg.data.end(), pData->buffer[pData->frame & 1],
                         &(pData->buffer[pData->frame & 1][pData->id]));
-                    image_pub.publish(msg);
+					//image_pub.publish(msg);
+						
+					// publish grayscale image
+					cv_bridge::CvImagePtr cvimg = cv_bridge::toCvCopy(msg, "rgba8");
+
+					cv::Mat img_gray;
+					cv::cvtColor(cvimg->image, img_gray, CV_BGR2GRAY);
+	
+					cvimg->image = img_gray;
+					cvimg->encoding = "mono8";
+
+					image_pub.publish(cvimg->toImageMsg());
+						
                     c_info.header.seq = pData->frame;
                     c_info.header.stamp = msg.header.stamp;
                     c_info.header.frame_id = msg.header.frame_id;
@@ -920,7 +935,7 @@ void reconfigure_callback(raspicam_node::CameraConfig &config, uint32_t level) {
 }
 
 int main(int argc, char **argv) {
-    ros::init(argc, argv, "raspicam_node");
+    ros::init(argc, argv, "raspicam_raw_node");
     ros::NodeHandle n("~");
 
     n.param("skip_frames", skip_frames, 0);
